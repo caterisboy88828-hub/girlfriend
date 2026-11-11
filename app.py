@@ -82,10 +82,9 @@ with st.sidebar.expander("➕ 新增自訂分類項目"):
 # ---------------------------------------------------------
 st.subheader("➕ 新增美食筆記")
 
-with st.add_form := st.form("add_memo_form", clear_on_submit=True):
+with st.form("add_memo_form", clear_on_submit=True):
     col1, col2 = st.columns(2)
     with col1:
-        # 動態抓取目前所有分類（包含新增的）
         category = st.selectbox("📂 選擇分類", st.session_state.categories)
     with col2:
         preference = st.selectbox("💖 喜愛程度", ["❤️ 超級喜歡", "😋 還不錯 / 偶爾吃", "❌ 雷區 / 絕對不吃"])
@@ -119,7 +118,6 @@ if not st.session_state.memo_data:
 else:
     df = pd.DataFrame(st.session_state.memo_data)
     
-    # 篩選工具
     filter_options = ["全部顯示"] + st.session_state.categories
     filter_cat = st.selectbox("🔍 依分類快速篩選", filter_options)
     
@@ -128,15 +126,13 @@ else:
     else:
         filtered_df = df
         
-    # 呈現美觀的卡片
     for index, row in filtered_df.iterrows():
-        # 根據喜愛程度給予溫和的背景色
         if "❤️" in row['preference']:
-            box_color = "#F4D1AE" # 溫暖橘粉
+            box_color = "#F4D1AE"
         elif "❌" in row['preference']:
-            box_color = "#E8C2C8" # 柔和暗紅
+            box_color = "#E8C2C8"
         else:
-            box_color = "#EFEAD8" # 柔和米黃
+            box_color = "#EFEAD8"
             
         st.markdown(f"""
         <div style="background-color: {box_color}; padding: 14px; border-radius: 12px; margin-bottom: 12px; color: #2D2A29; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
@@ -146,7 +142,6 @@ else:
         </div>
         """, unsafe_allow_html=True)
         
-    # 刪除與管理功能
     col_del1, col_del2 = st.columns(2)
     with col_del1:
         if st.button("🗑️ 刪除最後一筆記錄"):
